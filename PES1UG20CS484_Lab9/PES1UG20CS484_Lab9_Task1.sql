@@ -1,0 +1,20 @@
+DELIMITER $$
+CREATE TRIGGER after_insert_compartment
+AFTER INSERT
+ON COMPARTMENT_484 FOR EACH ROW
+BEGIN
+  DECLARE result VARCHAR(255);
+  DECLARE compartment_count INT;
+  SET result='Train can have only 4 compartments';
+SELECT COUNT(Train_no) INTO compartment_count FROM COMPARTMENT_484;
+IF compartment_count>4 THEN SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT=result;
+END IF;
+END $$
+DELIMITER ;
+
+
+SELECT * FROM COMPARTMENT_484 WHERE Train_no='58450';
+INSERT INTO COMPARTMENT_484 VALUES('F02', 'I Class', 16, 0, 58450);
+
+
